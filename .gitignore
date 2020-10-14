@@ -1,0 +1,10 @@
+
+# Byte-compiled / optimized / DLL files
+.vscode/
+*__pycache__/
+*.pyc
+.idea/
+build/
+dist/
+*.egg-info/
+*.egg
