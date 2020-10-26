@@ -2,8 +2,8 @@
 
 
 class MockProcess:
-    def __init__(self, date_str='2018-01-01', process_type=None, pid=None, modified=None, input_output_maps=[]):
-        self.date_run = date_str
+    def __init__(self, date_run='2018-01-01', process_type=None, pid=None, modified=None, input_output_maps=[]):
+        self.date_run = date_run
         self.type = process_type
         self.udf = {}
         self.input_artifact_list = []

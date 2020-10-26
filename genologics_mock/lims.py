@@ -13,12 +13,18 @@ class MockLims():
     def get_samples(self) -> list:
         return self.samples
 
-    def get_artifacts(self, process_type, samplelimsid) -> list:
+    def get_artifacts(self, process_type: list, samplelimsid: str, type: str) -> list:
         """"Get a list of artifacts."""
+
         if not isinstance(process_type, list):
             process_type = [process_type]
+
         arts = []
+
         for art in self.artifacts:
+            if type:
+                if not art.type==type:
+                    continue
             if process_type:
                 if not art.parent_process:
                     continue
@@ -28,6 +34,7 @@ class MockLims():
                 if not samplelimsid in [s.id for s in art.samples]:
                     continue
             arts.append(art)
+
         return arts
 
     def get_processes(self, type=None, udf={}, inputartifactlimsid=None, last_modified=None):
