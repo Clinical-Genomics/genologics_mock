@@ -21,7 +21,7 @@ class MockProcess:
 
     def all_inputs(self, unique=False):
         
-        if unique::
+        if unique:
             return list(set(self.inputs))  
         return self.inputs
 
