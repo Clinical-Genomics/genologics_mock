@@ -13,7 +13,10 @@ class MockProcess:
         self.input_output_maps = input_output_maps
         self.modified = modified
 
-    def all_outputs(self):
+    def all_outputs(self, unique=False):
+        
+        if unique:
+            return list(set())
         return self.outputs
 
     def all_inputs(self):
