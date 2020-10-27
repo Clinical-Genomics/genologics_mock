@@ -61,26 +61,6 @@ class MockLims():
         LOG.info(str(processes))
         return processes
 
-    def _add_artifact(self, parent_process=None, samples=[], id=None, udf={}):
-        artifact = MockArtifact(parent_process=parent_process, samples=samples, id=id, udf=udf)
-        self.artifacts.append(artifact)
-        return artifact
-
-    def _add_process_type(self, name=''):
-        process_type = MockProcessType(name)
-        self.process_types.append(process_type)
-        return process_type
-
-    def _add_process(self, date_str=None, process_type=None, pid=None):
-        process = MockProcess(date_str, process_type, pid=pid)
-        self.processes.append(process)
-        return process
-
-    def _add_sample(self, sample_id):
-        sample = MockSample(sample_id=sample_id)
-        self.samples.append(sample)
-        return sample
-
     def __repr__(self):
         return (f"Lims:artifacts={self.artifacts},process={self.processes},"
                 "process_types={self.process_types},samples={self.samples}")
