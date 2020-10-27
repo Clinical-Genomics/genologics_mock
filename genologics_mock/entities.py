@@ -19,7 +19,10 @@ class MockProcess:
             return list(set(self.outputs))
         return self.outputs
 
-    def all_inputs(self):
+    def all_inputs(self, unique=False):
+        
+        if unique::
+            return list(set(self.inputs))  
         return self.inputs
 
     def __repr__(self):
