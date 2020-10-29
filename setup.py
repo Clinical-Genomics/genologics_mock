@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from genologics_mock import __version__ as version
 from setuptools import setup, find_packages
 
 try:
@@ -13,7 +14,7 @@ with open("README.md", "r") as fh:
 
 
 setup(name='genologics_mock',
-      version='1.0.1',
+      version=version,
       description="Mock for the genologics package",
       long_description=long_description,
       long_description_content_type="text/markdown",
