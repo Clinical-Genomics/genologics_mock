@@ -70,6 +70,9 @@ class MockArtifact:
     def input_artifact_list(self):
         return self.input_list
 
+    def put(self):
+        pass
+
     def __repr__(self):
         return f"Artifact:parent_process={self.parent_process},samples={self.samples}"
 
