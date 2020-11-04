@@ -2,6 +2,11 @@
 
 This change log will document the notable changes to this project in this file and it is following [Semantic Versioning](https://semver.org/)
 
+## [1.0.6]
+
+### Added
+- Adding arguments to enteties and restructure
+
 ## [1.0.5]
 
 ### Changed
