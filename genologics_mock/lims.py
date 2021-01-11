@@ -1,66 +1,82 @@
-from genologics_mock.entities import MockArtifact, MockProcess, MockProcessType, MockSample
-import logging
-LOG = logging.getLogger(__name__)
+from genologics_mock.entities import MockArtifact, MockProcess, MockSample
+
+from typing import Dict, Optional
 
 
 class MockLims():
-    def __init__(self):
-        self.artifacts = []
-        self.processes = []
-        self.process_types = []
-        self.samples = []
+    "LIMS interface through which all entity instances are retrieved."
 
-    def get_samples(self) -> list:
-        return self.samples
+    VERSION = 'v2'
+    entities = {}
 
-    def get_artifacts(self, process_type: list, samplelimsid: str, type: str) -> list:
-        """"Get a list of artifacts."""
-
-        if not isinstance(process_type, list):
-            process_type = [process_type]
-
-        arts = []
-
-        for art in self.artifacts:
-            if type:
-                if not art.type==type:
-                    continue
-            if process_type:
-                if not art.parent_process:
-                    continue
-                elif not art.parent_process.type.name in process_type:
-                    continue
-            if samplelimsid:
-                if not samplelimsid in [s.id for s in art.samples]:
-                    continue
-            arts.append(art)
-
-        return arts
-
-    def get_processes(self, type=None, udf={}, inputartifactlimsid=None, last_modified=None):
-        processes = []
-        for process in self.processes:
-            if isinstance(type, list) and (process.type.name not in type):
+    def _get_instances(self, entity_type: Optional, params=dict(): Dict[str, Optional]):
+        for id, entity in entities.items():
+            if type(entity) != entity_type:
                 continue
-            elif isinstance(type, str) and (process.type.name != type):
-                continue
-            if udf:
-                subset = {key: process.udf.get(key) for key in udf}
-                if subset != udf:
-                    continue
-            if inputartifactlimsid:
-                if inputartifactlimsid not in [
-                    a.id for a in process.input_artifact_list
-                ]:
-                    continue
-            if last_modified:
-                LOG.info(process.modified)
-                if last_modified > process.modified:
-                    continue
-            processes.append(process)
-        LOG.info(str(processes))
-        return processes
 
-    def __repr__(self):
-        return (f"Lims:artifacts={self.artifacts},process={self.processes},"
-                "process_types={self.process_types},samples={self.samples}")
+
+    def get_samples(self, name=None, projectname=None, projectlimsid=None,
+                    udf=dict(), udtname=None, udt=dict(), start_index=None):
+        """Get a list of samples, filtered by keyword arguments.
+        name: Sample name, or list of names.
+        projectlimsid: Samples for the project of the given LIMS id.
+        projectname: Samples for the project of the name.
+        udf: dictionary of UDFs with 'UDFNAME[OPERATOR]' as keys.
+        udtname: UDT name, or list of names.
+        udt: dictionary of UDT UDFs with 'UDTNAME.UDFNAME[OPERATOR]' as keys
+             and a string or list of strings as value.
+        start_index: Page to retrieve; all if None.
+        """
+
+        return self._get_instances(MockSample, params=params)
+
+
+    def get_artifacts(self, name=None, type=None, process_type=None,
+                      artifact_flag_name=None, working_flag=None, qc_flag=None,
+                      sample_name=None, samplelimsid=None, artifactgroup=None, containername=None,
+                      containerlimsid=None, reagent_label=None,
+                      udf=dict(), udtname=None, udt=dict(), start_index=None,
+                      resolve=False):
+
+        """Get a list of artifacts, filtered by keyword arguments.
+        name: Artifact name, or list of names.
+        type: Artifact type, or list of types.
+        process_type: Produced by the process type, or list of types.
+        artifact_flag_name: Tagged with the genealogy flag, or list of flags.
+        working_flag: Having the given working flag; boolean.
+        qc_flag: Having the given QC flag: UNKNOWN, PASSED, FAILED.
+        sample_name: Related to the given sample name.
+        samplelimsid: Related to the given sample id.
+        artifactgroup: Belonging to the artifact group (experiment in client).
+        containername: Residing in given container, by name, or list.
+        containerlimsid: Residing in given container, by LIMS id, or list.
+        reagent_label: having attached reagent labels.
+        udf: dictionary of UDFs with 'UDFNAME[OPERATOR]' as keys.
+        udtname: UDT name, or list of names.
+        udt: dictionary of UDT UDFs with 'UDTNAME.UDFNAME[OPERATOR]' as keys
+             and a string or list of strings as value.
+        start_index: Page to retrieve; all if None.
+        """
+
+        return self._get_instances(MockArtifact, params=params)
+
+    def get_processes(self, last_modified=None, type=None,
+                      inputartifactlimsid=None,
+                      techfirstname=None, techlastname=None, projectname=None,
+                      udf=dict(), udtname=None, udt=dict(), start_index=None):
+
+        """Get a list of processes, filtered by keyword arguments.
+        last_modified: Since the given ISO format datetime.
+        type: Process type, or list of types.
+        inputartifactlimsid: Input artifact LIMS id, or list of.
+        udf: dictionary of UDFs with 'UDFNAME[OPERATOR]' as keys.
+        udtname: UDT name, or list of names.
+        udt: dictionary of UDT UDFs with 'UDTNAME.UDFNAME[OPERATOR]' as keys
+             and a string or list of strings as value.
+        techfirstname: First name of researcher, or list of.
+        techlastname: Last name of researcher, or list of.
+        projectname: Name of project, or list of.
+        start_index: Page to retrieve; all if None.
+        """
+
+        return self._get_instances(MockProcess, params=params)
