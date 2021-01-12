@@ -23,6 +23,7 @@ setup(name='genologics_mock',
       packages=find_packages(),
       url="https://github.com/Clinical-Genomics/genologics_mock",
       include_package_data=True,
+      entry_points={"console_scripts": ["gmock=genologics_mock.cli:cli"], },
       classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
